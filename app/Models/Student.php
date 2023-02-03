@@ -13,4 +13,9 @@ class Student extends Authenticatable
     protected $fillable = [
         'classroom_id', 'nisn', 'name', 'password', 'gender'
     ];
+
+    public function classroom()
+    {
+        return $this->belongsTo(Classroom::class);
+    }
 }
