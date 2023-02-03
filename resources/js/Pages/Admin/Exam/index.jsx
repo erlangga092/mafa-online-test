@@ -84,6 +84,7 @@ const Exam = ({ exams }) => {
                             </td>
                             <td className="text-center">
                               <Link
+                                href={`/admin/exams/${exam.id}`}
                                 className="btn btn-sm btn-primary border-0 shadow me-2"
                                 type="button"
                               >

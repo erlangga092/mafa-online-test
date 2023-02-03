@@ -31,14 +31,6 @@ const Create = ({ errors, lessons, classrooms }) => {
     });
   };
 
-  const handleEditorUpdate = (value, editor) => {
-    const length = editor.getContent({ format: "text" }).length;
-    setForm({
-      ...form,
-      description: value,
-    });
-  };
-
   return (
     <>
       <Head>
@@ -148,7 +140,12 @@ const Create = ({ errors, lessons, classrooms }) => {
                           content_style:
                             "body { font-family:Quicksand, Helvetica,Arial,sans-serif; font-size: 16px }",
                         }}
-                        onEditorChange={handleEditorUpdate}
+                        onEditorChange={(value, editor) => {
+                          setForm({
+                            ...form,
+                            description: value,
+                          });
+                        }}
                       />
                       {errors?.description && (
                         <div className="alert alert-danger mt-2">
