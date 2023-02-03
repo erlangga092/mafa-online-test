@@ -3,8 +3,6 @@ import { Head, Link } from "@inertiajs/react";
 import React from "react";
 
 const Student = ({ students }) => {
-  console.log(students.data);
-
   return (
     <>
       <Head>
@@ -28,6 +26,7 @@ const Student = ({ students }) => {
                     </div>
                     <div className="col-md-6 col-12 mb-2">
                       <Link
+                        href="/admin/students/import"
                         className="btn btn-md btn-success border-0 shadow w-100 text-white"
                         type="button"
                       >

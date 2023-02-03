@@ -7,6 +7,7 @@ use App\Models\Classroom;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StudentController extends Controller
 {
@@ -49,6 +50,22 @@ class StudentController extends Controller
             'password' => $request->password,
             'classroom_id' => $request->classroom_id
         ]);
+
+        return redirect()->route('admin.students.index');
+    }
+
+    public function import()
+    {
+        return Inertia::render("Admin/Student/Import");
+    }
+
+    public function storeImport(Request $request)
+    {
+        $this->validate($request, [
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+
+        Excel::import(new \App\Imports\StudentsImport(), $request->file('file'));
 
         return redirect()->route('admin.students.index');
     }
