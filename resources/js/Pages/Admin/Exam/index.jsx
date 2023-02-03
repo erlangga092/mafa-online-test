@@ -1,44 +1,28 @@
+import React from "react";
 import LayoutAdmin from "@/Layouts/Admin";
 import { Head, Link } from "@inertiajs/react";
-import React from "react";
-import Pagination from "@/Components/Pagination";
 
-const Student = ({ students }) => {
-  console.log(students);
-
+const Exam = ({ exams }) => {
   return (
     <>
       <Head>
-        <title>Siswa - Aplikasi Ujian Online</title>
+        <title>Ujian - Aplikasi Ujian Online</title>
       </Head>
       <LayoutAdmin>
-        <div className="container-fluid mb-5 mt-5">
+        <div className="container-fluid mt-5 mb-5">
           <div className="row">
             <div className="col-md-8">
               <div className="row">
-                <div className="col-md-5 col-12 mb-2">
-                  <div className="row">
-                    <div className="col-md-6 col-12 mb-2">
-                      <Link
-                        href="/admin/students/create"
-                        className="btn btn-md btn-primary border-0 shadow w-100"
-                        type="button"
-                      >
-                        <i className="fa fa-plus-circle"></i> Tambah
-                      </Link>
-                    </div>
-                    <div className="col-md-6 col-12 mb-2">
-                      <Link
-                        href="/admin/students/import"
-                        className="btn btn-md btn-success border-0 shadow w-100 text-white"
-                        type="button"
-                      >
-                        <i className="fa fa-file-excel"></i> Import
-                      </Link>
-                    </div>
-                  </div>
+                <div className="col-md-3 col-12 mb-2">
+                  <Link
+                    href="/admin/exams/create"
+                    className="btn btn-md btn-primary border-0 shadow w-100"
+                    type="button"
+                  >
+                    <i className="fa fa-plus-circle"></i> Tambah
+                  </Link>
                 </div>
-                <div className="col-md-7 col-12 mb-2">
+                <div className="col-md-9 col-12 mb-2">
                   <form action="">
                     <div className="input-group">
                       <input
@@ -70,14 +54,13 @@ const Student = ({ students }) => {
                           >
                             No.
                           </th>
-                          <th className="border-0">Nisn</th>
-                          <th className="border-0">Nama</th>
+                          <th className="border-0">Ujian</th>
+                          <th className="border-0">Pelajaran</th>
                           <th className="border-0">Kelas</th>
-                          <th className="border-0">Jenis Kelamin</th>
-                          <th className="border-0">Password</th>
+                          <th className="border-0">Jumlah Soal</th>
                           <th
                             className="border-0 rounded-end"
-                            style={{ width: "%15" }}
+                            style={{ width: "15%" }}
                           >
                             Aksi
                           </th>
@@ -85,28 +68,34 @@ const Student = ({ students }) => {
                       </thead>
                       <div className="mt-2"></div>
                       <tbody>
-                        {students?.data?.map((student, i) => (
+                        {exams?.data.map((exam, i) => (
                           <tr key={i}>
                             <td className="fw-bold text-center">
                               {++i +
-                                (students?.current_page - 1) *
-                                  students?.per_page}
+                                (exams?.current_page - 1) * exams?.per_page}
                             </td>
-                            <td>{student.nisn}</td>
-                            <td>{student.name}</td>
+                            <td>{exam.title}</td>
+                            <td>{exam.lesson.title}</td>
                             <td className="text-center">
-                              {student.classroom.title}
+                              {exam.classroom.title}
                             </td>
-                            <td className="text-center">{student.password}</td>
-                            <td className="text-center">{student.gender}</td>
                             <td className="text-center">
+                              {exam.questions.length}
+                            </td>
+                            <td className="text-center">
+                              <Link
+                                className="btn btn-sm btn-primary border-0 shadow me-2"
+                                type="button"
+                              >
+                                <i className="fa fa-plus-circle"></i>
+                              </Link>
                               <Link
                                 className="btn btn-sm btn-info border-0 shadow me-2"
                                 type="button"
                               >
                                 <i className="fa fa-pencil-alt"></i>
                               </Link>
-                              <button className="btn btn-sm btn-danger border-0">
+                              <button className="btn btn-sm btn-danger border-0 shadow">
                                 <i className="fa fa-trash"></i>
                               </button>
                             </td>
@@ -115,7 +104,6 @@ const Student = ({ students }) => {
                       </tbody>
                     </table>
                   </div>
-                  <Pagination links={students.links} />
                 </div>
               </div>
             </div>
@@ -126,4 +114,4 @@ const Student = ({ students }) => {
   );
 };
 
-export default Student;
+export default Exam;
