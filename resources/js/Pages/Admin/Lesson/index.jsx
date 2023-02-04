@@ -28,13 +28,24 @@ const Lesson = ({ lessons }) => {
       confirmButtonText: "Yes, delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        router.delete(`/admin/lessons/${ID}`);
-        Swal.fire({
-          title: "Deleted!",
-          text: "Pelajaran Berhasil Dihapus!",
-          icon: "success",
-          timer: 1000,
-          showConfirmButton: false,
+        router.delete(`/admin/lessons/${ID}`, {
+          onSuccess: () => {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Pelajaran Berhasil Dihapus!",
+              icon: "success",
+              timer: 1000,
+              showConfirmButton: false,
+            });
+          },
+          onError: (errors) => {
+            Swal.fire({
+              title: "Failed!",
+              text: errors[0],
+              icon: "failed",
+              showConfirmButton: true,
+            });
+          },
         });
       }
     });

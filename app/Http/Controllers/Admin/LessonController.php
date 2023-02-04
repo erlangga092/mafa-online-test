@@ -65,8 +65,12 @@ class LessonController extends Controller
 
     public function destroy($id)
     {
-        $lesson = Lesson::findOrFail($id);
-        $lesson->delete();
-        return redirect()->route('admin.lessons.index');
+        try {
+            $lesson = Lesson::findOrFail($id);
+            $lesson->delete();
+            return redirect()->route('admin.lessons.index');
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()->withErrors($e->getMessage());
+        }
     }
 }

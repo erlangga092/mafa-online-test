@@ -39,4 +39,35 @@ class ClassroomController extends Controller
 
         return redirect()->route('admin.classrooms.index');
     }
+
+    public function edit($id)
+    {
+        $classroom = Classroom::findOrFail($id);
+
+        return Inertia::render('Admin/Classroom/Edit', compact('classroom'));
+    }
+
+    public function update(Request $request, Classroom $classroom)
+    {
+        $this->validate($request, [
+            'title' => 'required|string|unique:classrooms,title,' . $classroom->id,
+        ]);
+
+        $classroom->update([
+            'title' => $request->title
+        ]);
+
+        return redirect()->route('admin.classrooms.index');
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $classroom = Classroom::findOrFail($id);
+            $classroom->delete();
+            return redirect()->route('admin.classrooms.index');
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()->withErrors($e->getMessage());
+        }
+    }
 }
