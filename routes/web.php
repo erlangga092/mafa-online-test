@@ -43,5 +43,9 @@ Route::prefix("admin")->group(function () {
         Route::get('/exams/{exam}/questions/create', [\App\Http\Controllers\Admin\ExamController::class, 'createQuestion'])->name('admin.exams.createQuestion');
 
         Route::post('/exams/{exam}/questions/store', [\App\Http\Controllers\Admin\ExamController::class, 'storeQuestion'])->name('admin.exams.storeQuestion');
+
+        Route::get("/exams/{exam}/questions/import", [\App\Http\Controllers\Admin\ExamController::class, 'import'])->name('admin.exams.questionImport');
+
+        Route::post('/exams/{exam}/questions/import', [\App\Http\Controllers\Admin\ExamController::class, 'storeImport'])->name('admin.exams.questionStoreImport');
     });
 });

@@ -2,6 +2,7 @@ import Pagination from "@/Components/Pagination";
 import LayoutAdmin from "@/Layouts/Admin";
 import { Head, Link, router } from "@inertiajs/react";
 import React from "react";
+import Swal from "sweetalert2";
 
 const Lesson = ({ lessons }) => {
   const [search, setSearch] = React.useState(
@@ -12,6 +13,30 @@ const Lesson = ({ lessons }) => {
     e.preventDefault();
     router.get("/admin/lessons", {
       q: search,
+    });
+  };
+
+  const onDelete = (e, ID) => {
+    e.preventDefault();
+    Swal.fire({
+      title: "Apakah anda yakin?",
+      text: "Anda tidak akan dapat mengembalikan ini!",
+      icon: "warning",
+      showCancelButton: false,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        router.delete(`/admin/lessons/${ID}`);
+        Swal.fire({
+          title: "Deleted!",
+          text: "Pelajaran Berhasil Dihapus!",
+          icon: "success",
+          timer: 1000,
+          showConfirmButton: false,
+        });
+      }
     });
   };
 
@@ -87,12 +112,17 @@ const Lesson = ({ lessons }) => {
                             <td>{lesson.title}</td>
                             <td className="text-center">
                               <Link
+                                href={`/admin/lessons/${lesson.id}/edit`}
                                 className="btn btn-sm btn-info border-0 shadow me-2"
                                 type="button"
                               >
                                 <i className="fa fa-pencil-alt"></i>
                               </Link>
-                              <button className="btn btn-sm btn-danger border-0">
+                              <button
+                                className="btn btn-sm btn-danger border-0"
+                                type="button"
+                                onClick={(e) => onDelete(e, lesson.id)}
+                              >
                                 <i className="fa fa-trash"></i>
                               </button>
                             </td>

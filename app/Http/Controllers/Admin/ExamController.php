@@ -9,6 +9,7 @@ use App\Models\Lesson;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ExamController extends Controller
 {
@@ -98,6 +99,21 @@ class ExamController extends Controller
             'answer' => $request->answer
         ]);
 
+        return redirect()->route('admin.exams.show', $exam->id);
+    }
+
+    public function import(Exam $exam)
+    {
+        return Inertia::render('Admin/Question/Import', compact('exam'));
+    }
+
+    public function storeImport(Request $request, Exam $exam)
+    {
+        $this->validate($request, [
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+
+        Excel::import(new \App\Imports\QuestionImport(), $request->file('file'));
         return redirect()->route('admin.exams.show', $exam->id);
     }
 }

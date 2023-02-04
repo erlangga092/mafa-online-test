@@ -77,6 +77,7 @@ const Show = ({ exam }) => {
                     <i className="fa fa-plus-circle"></i> Tambah
                   </Link>
                   <Link
+                    href={`/admin/exams/${exam.id}/questions/import`}
                     className="btn btn-md btn-success border-0 shadow text-white"
                     type="button"
                   >
