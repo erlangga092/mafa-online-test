@@ -69,6 +69,53 @@ class ExamController extends Controller
         return Inertia::render('Admin/Exam/Show', compact('exam'));
     }
 
+    public function edit($id)
+    {
+        $exam = Exam::with('lesson', 'classroom')->findOrFail($id);
+        $lessons = Lesson::all();
+        $classrooms = Classroom::all();
+
+        return Inertia::render('Admin/Exam/Edit', compact('exam', 'lessons', 'classrooms'));
+    }
+
+    public function update(Request $request, Exam $exam)
+    {
+        $this->validate($request, [
+            'title' => 'required',
+            'lesson_id' => 'required|integer',
+            'classroom_id' => 'required|integer',
+            'duration' => 'required|integer',
+            'description' => 'required',
+            'random_question' => 'required',
+            'random_answer' => 'required',
+            'show_answer' => 'required'
+        ]);
+
+        $exam->update([
+            'title' => $request->title,
+            'lesson_id' => $request->lesson_id,
+            'classroom_id' => $request->classroom_id,
+            'duration' => $request->duration,
+            'description' => $request->description,
+            'random_question' => $request->random_question,
+            'random_answer' => $request->random_answer,
+            'show_answer' => $request->show_answer
+        ]);
+
+        return redirect()->route('admin.exams.index');
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $exam = Exam::findOrFail($id);
+            $exam->delete();
+            return redirect()->route('admin.exams.index');
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()->withErrors($e->getMessage());
+        }
+    }
+
     public function createQuestion(Exam $exam)
     {
         return Inertia::render('Admin/Question/Create', [

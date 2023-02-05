@@ -1,6 +1,6 @@
+import LayoutAdmin from "@/Layouts/Admin";
 import { Head } from "@inertiajs/react";
 import React from "react";
-import LayoutAdmin from "@/Layouts/Admin";
 
 const Dashboard = ({ classrooms, lessons, students, exams, exam_sessions }) => {
   return (

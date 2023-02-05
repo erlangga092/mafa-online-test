@@ -1,8 +1,55 @@
 import React from "react";
 import LayoutAdmin from "@/Layouts/Admin";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
+import Swal from "sweetalert2";
 
 const Exam = ({ exams }) => {
+  const [search, setSearch] = React.useState(
+    "" || new URL(window.document.location).searchParams.get("q")
+  );
+
+  const onSearch = (e) => {
+    e.preventDefault();
+    router.get("/admin/exams", {
+      q: search,
+    });
+  };
+
+  const onDelete = (e, ID) => {
+    e.preventDefault();
+    Swal.fire({
+      title: "Apakah anda yakin?",
+      text: "Anda tidak akan dapat mengembalikan ini!",
+      icon: "warning",
+      showCancelButton: false,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        router.delete(`/admin/exams/${ID}`, {
+          onSuccess: () => {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Ujian Berhasil Dihapus!",
+              icon: "success",
+              timer: 1000,
+              showConfirmButton: false,
+            });
+          },
+          onError: (errors) => {
+            Swal.fire({
+              title: "Failed!",
+              text: errors[0],
+              icon: "failed",
+              showConfirmButton: true,
+            });
+          },
+        });
+      }
+    });
+  };
+
   return (
     <>
       <Head>
@@ -23,12 +70,13 @@ const Exam = ({ exams }) => {
                   </Link>
                 </div>
                 <div className="col-md-9 col-12 mb-2">
-                  <form action="">
+                  <form onSubmit={onSearch}>
                     <div className="input-group">
                       <input
                         type="text"
                         className="form-control border-0 shadow"
                         placeholder="masukkan kata kunci dan enter..."
+                        onChange={(e) => setSearch(e.target.value)}
                       />
                       <span className="input-group-text border-0 shadow">
                         <i className="fa fa-search"></i>
@@ -91,12 +139,16 @@ const Exam = ({ exams }) => {
                                 <i className="fa fa-plus-circle"></i>
                               </Link>
                               <Link
+                                href={`/admin/exams/${exam.id}/edit`}
                                 className="btn btn-sm btn-info border-0 shadow me-2"
                                 type="button"
                               >
                                 <i className="fa fa-pencil-alt"></i>
                               </Link>
-                              <button className="btn btn-sm btn-danger border-0 shadow">
+                              <button
+                                className="btn btn-sm btn-danger border-0 shadow"
+                                onClick={(e) => onDelete(e, exam.id)}
+                              >
                                 <i className="fa fa-trash"></i>
                               </button>
                             </td>

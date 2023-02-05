@@ -13,9 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/', function () {
+    return view('welcome');
+});
 
 Route::prefix("admin")->group(function () {
     Route::group(['middleware' => ['auth']], function () {
@@ -49,3 +49,11 @@ Route::prefix("admin")->group(function () {
         Route::post('/exams/{exam}/questions/import', [\App\Http\Controllers\Admin\ExamController::class, 'storeImport'])->name('admin.exams.questionStoreImport');
     });
 });
+
+// Route::get("/", function () {
+//     if (auth()->guard('student')->check()) {
+//         return redirect()->route('student.dashboad');
+//     }
+
+//     return \Inertia\Inertia::render('Student/Login/Index');
+// });

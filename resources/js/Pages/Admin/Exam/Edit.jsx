@@ -4,28 +4,28 @@ import { Editor } from "@tinymce/tinymce-react";
 import React from "react";
 import Swal from "sweetalert2";
 
-const Create = ({ errors, lessons, classrooms }) => {
+const Edit = ({ errors, lessons, classrooms, exam }) => {
   const [form, setForm] = React.useState({
-    title: "",
-    lesson_id: lessons[0].id,
-    classroom_id: classrooms[0].id,
-    description: "",
-    random_question: "Y",
-    random_answer: "Y",
-    show_answer: "N",
-    duration: 1,
+    title: exam.title,
+    lesson_id: exam.lesson_id,
+    classroom_id: exam.classroom_id,
+    description: exam.description,
+    random_question: exam.random_question,
+    random_answer: exam.random_answer,
+    show_answer: exam.show_answer,
+    duration: exam.duration,
   });
 
   const onSubmit = (e) => {
     e.preventDefault();
-    router.post("/admin/exams", form, {
+    router.put(`/admin/exams/${exam.id}`, form, {
       onSuccess: () => {
         Swal.fire({
           title: "Success!",
-          text: "Ujian Berhasil Disimpan!",
+          text: "Ujian Berhasil Diupdate!",
           icon: "success",
           showConfirmButton: false,
-          timer: 2000,
+          timer: 1000,
         });
       },
     });
@@ -58,6 +58,7 @@ const Create = ({ errors, lessons, classrooms }) => {
                       <label>Nama Ujian</label>
                       <input
                         type="text"
+                        value={form.title}
                         className="form-control"
                         placeholder="Masukkan Nama Ujian"
                         onChange={(e) =>
@@ -89,7 +90,11 @@ const Create = ({ errors, lessons, classrooms }) => {
                             }
                           >
                             {lessons?.map((lesson) => (
-                              <option value={lesson.id} key={lesson.id}>
+                              <option
+                                value={lesson.id}
+                                key={lesson.id}
+                                selected={lesson.id == form.lesson_id}
+                              >
                                 {lesson.title}
                               </option>
                             ))}
@@ -115,7 +120,11 @@ const Create = ({ errors, lessons, classrooms }) => {
                             }
                           >
                             {classrooms?.map((classroom) => (
-                              <option value={classroom.id} key={classroom.id}>
+                              <option
+                                value={classroom.id}
+                                key={classroom.id}
+                                selected={classroom.id == form.classroom_id}
+                              >
                                 {classroom.title}
                               </option>
                             ))}
@@ -131,7 +140,8 @@ const Create = ({ errors, lessons, classrooms }) => {
                     <div className="mb-4">
                       <label htmlFor="">Deskripsi</label>
                       <Editor
-                        api-key="no-api-key"
+                        value={form.description}
+                        apiKey="no-api-key"
                         init={{
                           menubar: false,
                           plugins: "lists link image emoticons",
@@ -167,8 +177,18 @@ const Create = ({ errors, lessons, classrooms }) => {
                               })
                             }
                           >
-                            <option value="Y">Y</option>
-                            <option value="N">N</option>
+                            <option
+                              value="Y"
+                              selected={form.random_question == "Y"}
+                            >
+                              Y
+                            </option>
+                            <option
+                              value="N"
+                              selected={form.random_question == "N"}
+                            >
+                              N
+                            </option>
                           </select>
                           {errors?.random_question && (
                             <div className="alert alert-danger mt-2">
@@ -190,8 +210,18 @@ const Create = ({ errors, lessons, classrooms }) => {
                               })
                             }
                           >
-                            <option value="Y">Y</option>
-                            <option value="N">N</option>
+                            <option
+                              value="Y"
+                              selected={form.random_answer == "Y"}
+                            >
+                              Y
+                            </option>
+                            <option
+                              value="N"
+                              selected={form.random_answer == "N"}
+                            >
+                              N
+                            </option>
                           </select>
                           {errors?.random_answer && (
                             <div className="alert alert-danger mt-2">
@@ -215,8 +245,18 @@ const Create = ({ errors, lessons, classrooms }) => {
                               })
                             }
                           >
-                            <option value="Y">Y</option>
-                            <option value="N">N</option>
+                            <option
+                              value="Y"
+                              selected={form.show_answer == "Y"}
+                            >
+                              Y
+                            </option>
+                            <option
+                              value="N"
+                              selected={form.show_answer == "N"}
+                            >
+                              N
+                            </option>
                           </select>
                           {errors?.show_answer && (
                             <div className="alert alert-danger mt-2">
@@ -230,6 +270,7 @@ const Create = ({ errors, lessons, classrooms }) => {
                         <div className="mb-4">
                           <label htmlFor="">Durasi (menit)</label>
                           <input
+                            value={form.duration}
                             type="number"
                             min={1}
                             className="form-control"
@@ -254,7 +295,7 @@ const Create = ({ errors, lessons, classrooms }) => {
                       type="submit"
                       className="btn btn-md btn-primary border-0 shadow me-2"
                     >
-                      Simpan
+                      Update
                     </button>
                     <button
                       type="reset"
@@ -273,4 +314,4 @@ const Create = ({ errors, lessons, classrooms }) => {
   );
 };
 
-export default Create;
+export default Edit;

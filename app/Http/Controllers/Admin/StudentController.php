@@ -54,6 +54,17 @@ class StudentController extends Controller
         return redirect()->route('admin.students.index');
     }
 
+    public function destroy($id)
+    {
+        try {
+            $student = Student::findOrFail($id);
+            $student->delete();
+            return redirect()->route('admin.students.index');
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()->withErrors($e->getMessage());
+        }
+    }
+
     public function import()
     {
         return Inertia::render("Admin/Student/Import");

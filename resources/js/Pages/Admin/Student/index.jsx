@@ -1,10 +1,44 @@
-import LayoutAdmin from "@/Layouts/Admin";
-import { Head, Link } from "@inertiajs/react";
-import React from "react";
 import Pagination from "@/Components/Pagination";
+import LayoutAdmin from "@/Layouts/Admin";
+import { Head, Link, router } from "@inertiajs/react";
+import React from "react";
+import Swal from "sweetalert2";
 
 const Student = ({ students }) => {
-  console.log(students);
+  const onDelete = (e, ID) => {
+    e.preventDefault();
+    Swal.fire({
+      title: "Apakah anda yakin?",
+      text: "Anda tidak akan dapat mengembalikan ini!",
+      icon: "warning",
+      showCancelButton: false,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        router.delete(`/admin/students/${ID}`, {
+          onSuccess: () => {
+            Swal.fire({
+              title: "Deleted!",
+              text: "Data Siswa Berhasil Dihapus!",
+              icon: "success",
+              timer: 1000,
+              showConfirmButton: false,
+            });
+          },
+          onError: (errors) => {
+            Swal.fire({
+              title: "Failed!",
+              text: errors[0],
+              icon: "failed",
+              showConfirmButton: true,
+            });
+          },
+        });
+      }
+    });
+  };
 
   return (
     <>
@@ -106,7 +140,11 @@ const Student = ({ students }) => {
                               >
                                 <i className="fa fa-pencil-alt"></i>
                               </Link>
-                              <button className="btn btn-sm btn-danger border-0">
+                              <button
+                                className="btn btn-sm btn-danger border-0"
+                                type="button"
+                                onClick={(e) => onDelete(e, student.id)}
+                              >
                                 <i className="fa fa-trash"></i>
                               </button>
                             </td>
