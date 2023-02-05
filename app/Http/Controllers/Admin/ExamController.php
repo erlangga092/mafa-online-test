@@ -163,4 +163,44 @@ class ExamController extends Controller
         Excel::import(new \App\Imports\QuestionImport(), $request->file('file'));
         return redirect()->route('admin.exams.show', $exam->id);
     }
+
+    public function editQuestion(Exam $exam, Question $question)
+    {
+        return Inertia::render('Admin/Question/Edit', compact('exam', 'question'));
+    }
+
+    public function updateQuestion(Request $request, Exam $exam, Question $question)
+    {
+        $this->validate($request, [
+            'question' => 'required',
+            'option_1' => 'required',
+            'option_2' => 'required',
+            'option_3' => 'required',
+            'option_4' => 'required',
+            'option_5' => 'required',
+            'answer' => 'required',
+        ]);
+
+        $question->update([
+            'question' => $request->question,
+            'option_1' => $request->option_1,
+            'option_2' => $request->option_2,
+            'option_3' => $request->option_3,
+            'option_4' => $request->option_4,
+            'option_5' => $request->option_5,
+            'answer' => $request->answer,
+        ]);
+
+        return redirect()->route('admin.exams.show', $exam->id);
+    }
+
+    public function destroyQuestion(Exam $exam, Question $question)
+    {
+        try {
+            $question->delete();
+            return redirect()->route('admin.exams.show', $exam->id);
+        } catch (\Illuminate\Database\QueryException $e) {
+            return back()->withErrors($e->getMessage());
+        }
+    }
 }

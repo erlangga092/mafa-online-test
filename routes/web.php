@@ -40,6 +40,7 @@ Route::prefix("admin")->group(function () {
         // exams
         Route::resource("/exams", \App\Http\Controllers\Admin\ExamController::class, ['as' => 'admin']);
 
+        // question
         Route::get('/exams/{exam}/questions/create', [\App\Http\Controllers\Admin\ExamController::class, 'createQuestion'])->name('admin.exams.createQuestion');
 
         Route::post('/exams/{exam}/questions/store', [\App\Http\Controllers\Admin\ExamController::class, 'storeQuestion'])->name('admin.exams.storeQuestion');
@@ -47,13 +48,11 @@ Route::prefix("admin")->group(function () {
         Route::get("/exams/{exam}/questions/import", [\App\Http\Controllers\Admin\ExamController::class, 'import'])->name('admin.exams.questionImport');
 
         Route::post('/exams/{exam}/questions/import', [\App\Http\Controllers\Admin\ExamController::class, 'storeImport'])->name('admin.exams.questionStoreImport');
+
+        Route::get('/exams/{exam}/questions/{question}/edit', [\App\Http\Controllers\Admin\ExamController::class, "editQuestion"])->name('admin.exams.editQuestion');
+
+        Route::put('/exams/{exam}/questions/{question}/update', [\App\Http\Controllers\Admin\ExamController::class, 'updateQuestion'])->name('admin.exams.updateQuestion');
+
+        Route::delete('/exams/{exam}/questions/{question}/destroy', [\App\Http\Controllers\Admin\ExamController::class, 'destroyQuestion'])->name('admin.exams.destroyQuestion');
     });
 });
-
-// Route::get("/", function () {
-//     if (auth()->guard('student')->check()) {
-//         return redirect()->route('student.dashboad');
-//     }
-
-//     return \Inertia\Inertia::render('Student/Login/Index');
-// });
