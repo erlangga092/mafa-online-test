@@ -12,4 +12,14 @@ class ExamSession extends Model
     protected $fillable = [
         'exam_id', 'title', 'start_time', 'end_time'
     ];
+
+    public function exam_groups()
+    {
+        return $this->hasMany(ExamGroup::class);
+    }
+
+    public function exam()
+    {
+        return $this->belongsTo(Exam::class);
+    }
 }
