@@ -117,7 +117,6 @@ const Student = ({ students }) => {
                           </th>
                         </tr>
                       </thead>
-                      <div className="mt-2"></div>
                       <tbody>
                         {students?.data?.map((student, i) => (
                           <tr key={i}>

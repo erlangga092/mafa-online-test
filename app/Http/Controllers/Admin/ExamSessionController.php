@@ -145,4 +145,10 @@ class ExamSessionController extends Controller
 
         return redirect()->route('admin.exam_sessions.show', $exam_session->id);
     }
+
+    public function destroyEnrolle(ExamSession $exam_session, ExamGroup $exam_group)
+    {
+        $exam_group->delete();
+        return redirect()->route('admin.exam_sessions.show', $exam_session->id);
+    }
 }

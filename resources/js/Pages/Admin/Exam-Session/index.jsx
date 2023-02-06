@@ -76,7 +76,6 @@ const ExamSession = ({ exam_sessions }) => {
                           </th>
                         </tr>
                       </thead>
-                      <div className="mt-2"></div>
                       <tbody>
                         {exam_sessions?.data?.map((exam_session, i) => (
                           <tr>

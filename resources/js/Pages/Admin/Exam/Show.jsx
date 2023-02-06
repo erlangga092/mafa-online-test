@@ -138,7 +138,6 @@ const Show = ({ exam }) => {
                           </th>
                         </tr>
                       </thead>
-                      <div className="mt-2"></div>
                       <tbody>
                         {exam?.questions?.data.map((question, i) => (
                           <tr key={question.id}>

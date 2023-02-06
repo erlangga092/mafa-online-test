@@ -1,10 +1,9 @@
 import LayoutAdmin from "@/Layouts/Admin";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import React from "react";
+import Swal from "sweetalert2";
 
 const Show = ({ exam_session }) => {
-  console.log(exam_session);
-
   const renderTimeWithUnicode = (time) => {
     const splitTime = time.split(" ");
     return (
@@ -12,6 +11,44 @@ const Show = ({ exam_session }) => {
         {splitTime[0]} &#8226; {splitTime[1]}
       </p>
     );
+  };
+
+  const onDestroy = (e, exam_session_id, data_id) => {
+    e.preventDefault();
+    Swal.fire({
+      title: "Apakah anda yakin?",
+      text: "Anda tidak akan dapat mengembalikan ini!",
+      icon: "warning",
+      showCancelButton: false,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        router.delete(
+          `/admin/exam_sessions/${exam_session_id}/enrolle/${data_id}/destroy`,
+          {
+            onSuccess: () => {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Siswa Berhasil Dihapus!",
+                icon: "success",
+                timer: 1000,
+                showConfirmButton: false,
+              });
+            },
+            onError: (errors) => {
+              Swal.fire({
+                title: "Failed!",
+                text: errors[0],
+                icon: "failed",
+                showConfirmButton: true,
+              });
+            },
+          }
+        );
+      }
+    });
   };
 
   return (
@@ -25,10 +62,10 @@ const Show = ({ exam_session }) => {
             <div className="col-md-12">
               <Link
                 href="/admin/exam_sessions"
-                class="btn btn-md btn-primary border-0 shadow mb-3"
+                className="btn btn-md btn-primary border-0 shadow mb-3"
                 type="button"
               >
-                <i class="fa fa-long-arrow-alt-left me-2"></i> Kembali
+                <i className="fa fa-long-arrow-alt-left me-2"></i> Kembali
               </Link>
 
               <div className="card border-0 shadow mb-4">
@@ -110,11 +147,14 @@ const Show = ({ exam_session }) => {
                           </th>
                         </tr>
                       </thead>
-                      <div className="mt-2"></div>
                       <tbody>
                         {exam_session?.exam_groups?.data?.map((data, i) => (
-                          <tr>
-                            <td className="fw-bold text-center">1</td>
+                          <tr key={i}>
+                            <td className="fw-bold text-center">
+                              {++i +
+                                (exam_session.exam_groups.current_page - 1) *
+                                  exam_session.exam_groups.per_page}
+                            </td>
                             <td>{data?.student?.name}</td>
                             <td className="text-center">
                               {data?.student?.classroom.title}
@@ -123,7 +163,13 @@ const Show = ({ exam_session }) => {
                               {data?.student?.gender}
                             </td>
                             <td className="text-center">
-                              <button className="btn btn-sm btn-danger border-0">
+                              <button
+                                className="btn btn-sm btn-danger border-0"
+                                type="button"
+                                onClick={(e) =>
+                                  onDestroy(e, exam_session.id, data.id)
+                                }
+                              >
                                 <i className="fa fa-trash"></i>
                               </button>
                             </td>

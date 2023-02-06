@@ -102,7 +102,7 @@ const Create = ({ exam_session, students, errors, exam }) => {
                         <thead className="thead-dark">
                           <tr className="border-0">
                             <th
-                              className="border-0 rounded-start"
+                              className="border-0 rounded-top-left"
                               style={{ width: "5%" }}
                             >
                               <input
@@ -113,10 +113,11 @@ const Create = ({ exam_session, students, errors, exam }) => {
                             </th>
                             <th className="border-0">Nama Siswa</th>
                             <th className="border-0">Kelas</th>
-                            <th className="border-0">Jenis Kelamin</th>
+                            <th className="border-0 rounded-top-right">
+                              Jenis Kelamin
+                            </th>
                           </tr>
                         </thead>
-                        <div className="mt-3"></div>
                         <tbody>
                           {students?.map((student) => (
                             <tr>

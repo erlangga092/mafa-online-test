@@ -112,7 +112,6 @@ const Lesson = ({ lessons }) => {
                           </th>
                         </tr>
                       </thead>
-                      <div className="mt-2"></div>
                       <tbody>
                         {lessons?.data?.map((lesson, index) => (
                           <tr key={index}>

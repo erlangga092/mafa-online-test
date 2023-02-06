@@ -107,7 +107,7 @@ const Classroom = ({ classrooms }) => {
                           </th>
                         </tr>
                       </thead>
-                      <div className="mt-2"></div>
+                      {/* <div className="mt-2"></div> */}
                       <tbody>
                         {classrooms?.data?.map((classroom, index) => (
                           <tr key={index}>

@@ -114,7 +114,6 @@ const Exam = ({ exams }) => {
                           </th>
                         </tr>
                       </thead>
-                      <div className="mt-2"></div>
                       <tbody>
                         {exams?.data.map((exam, i) => (
                           <tr key={i}>
